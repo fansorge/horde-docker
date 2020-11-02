@@ -2,15 +2,14 @@ version: '2'
 
 services:
     php-httpd:
-#        image: php:7.4.12-apache
-        build:
-            context: ./php-httpd
+        image: php:7.4.12-apache
+#        build:
+#            context: ./php-httpd
         ports:
             - 8080:80
             - 8443:443
         volumes:
-            - "./DocumentRoot:/var/www/html"
-            - "./ssl:/etc/ssl/certs/ansorge-org"
+            - DocumentRoot-volume:/var/www/html
 
     mariadb:
         image: mariadb:10.5.6
@@ -33,5 +32,6 @@ services:
 
 volumes:
     mariadb-volume:
+    DocumentRoot-volume:
 
 
