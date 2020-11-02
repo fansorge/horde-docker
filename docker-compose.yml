@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+    php-httpd:
+#        image: php:7.4.12-apache
+        build:
+            context: ./php-httpd
+        ports:
+            - 8080:80
+            - 8443:443
+        volumes:
+            - "./DocumentRoot:/var/www/html"
+            - "./ssl:/etc/ssl/certs/ansorge-org"
+
+    mariadb:
+        image: mariadb:10.5.6
+        volumes:
+            - mariadb-volume:/var/lib/mysql
+        environment:
+            TZ: "Europe/Berlin"
+            MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+            MYSQL_ROOT_PASSWORD: "rootpwd"
+            MYSQL_USER: 'hordeuser'
+            MYSQL_PASSWORD: 'nicepassword'
+            MYSQL_DATABASE: 'horde'
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - 'mariadb:db'
+        ports:
+            - 8081:80
+
+volumes:
+    mariadb-volume:
+
+
