@@ -18,7 +18,7 @@ ENV HORDE_TEST_DISABLE false
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
  && apt-get -y update && apt-get -y upgrade 
 
-RUN apt-get install -y apache2 libapache2-mod-php mysql-client gnupg2 openssl php-pear \
+RUN apt-get install -y apache2 libapache2-mod-php gnupg2 openssl php-pear \
 	php-horde php-horde-imp php-horde-groupware php-horde-ingo php-horde-lz4 \
 	php-imagick php-dev php-memcache php-memcached php-net-sieve \
  && pear channel-update pear.php.net \
@@ -43,25 +43,25 @@ RUN echo extension=lzf.so > $PHP_ETC_DIR/mods-available/lzf.ini \
 
 COPY info.php /var/www/html/info.php
 
-#RUN mv /etc/horde /etc/.horde
-#COPY horde-init.sh /etc/my_init.d/horde-init.sh
-#COPY horde-base-settings.inc /etc/horde-base-settings.inc
-#RUN chmod +x /etc/my_init.d/horde-init.sh
+RUN mv /etc/horde /etc/.horde \
+ && mkdir -p /etc/service/apache2 \
+ && mkdir -p /etc/apache2/scripts
 
-#RUN mkdir -p /etc/service/apache2
-#COPY run.sh /etc/service/apache2/run
-#RUN chmod +x /etc/service/apache2/run && \
-#	a2dissite 000-default && a2disconf php-horde
+COPY horde-init.sh /etc/my_init.d/horde-init.sh
+COPY horde-base-settings.inc /etc/horde-base-settings.inc
 
-#RUN mkdir -p /etc/apache2/scripts
-#COPY proxy_client_ip.php /etc/apache2/scripts/proxy_client_ip.php
+COPY run.sh /etc/service/apache2/run
+COPY apache-horde.conf /etc/apache2/sites-available/horde.conf
 
-#COPY apache-horde.conf /etc/apache2/sites-available/horde.conf
-#RUN a2ensite horde
+COPY proxy_client_ip.php /etc/apache2/scripts/proxy_client_ip.php
+COPY docker-entrypoint.sh /
 
-#COPY docker-entrypoint.sh /
+RUN chmod +x /etc/my_init.d/horde-init.sh \
+ && chmod +x /etc/service/apache2/run \
+ && a2dissite 000-default && a2disconf php-horde \
+ && a2ensite horde
 
-#ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 #CMD ["/sbin/my_init"]
 
-#VOLUME /etc/horde
+VOLUME /etc/horde

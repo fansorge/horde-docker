@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 #
 # Docker entrypoint script to change UID/GID of Debian/Ubuntu Apache
 #
