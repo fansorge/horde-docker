@@ -51,7 +51,7 @@ COPY info.php /var/www/html/info.php
 #RUN mkdir -p /etc/service/apache2
 #COPY run.sh /etc/service/apache2/run
 #RUN chmod +x /etc/service/apache2/run && \
-	a2dissite 000-default && a2disconf php-horde
+#	a2dissite 000-default && a2disconf php-horde
 
 #RUN mkdir -p /etc/apache2/scripts
 #COPY proxy_client_ip.php /etc/apache2/scripts/proxy_client_ip.php
