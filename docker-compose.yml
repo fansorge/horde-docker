@@ -2,9 +2,9 @@ version: '2'
 
 services:
     php-httpd:
-        image: php:7.4.12-apache
-#        build:
-#            context: ./php-httpd
+#       image: php:7.4.12-apache
+        build:
+            context: ./php-httpd
         ports:
             - 8080:80
             - 8443:443
