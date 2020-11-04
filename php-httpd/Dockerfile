@@ -3,6 +3,7 @@ FROM ubuntu:18.04
 LABEL maintainer "mobilemailer@web.de"
 
 ENV TZ=Europe/Berlin
+
 # TODO: figure out a smart automatic way to discover the path
 ARG PHP_ETC_DIR=/etc/php/7.2
 
@@ -18,7 +19,7 @@ ENV HORDE_TEST_DISABLE false
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
  && apt-get -y update && apt-get -y upgrade 
 
-RUN apt-get install -y apache2 libapache2-mod-php gnupg2 openssl php-pear \
+RUN apt-get install -y apache2 libapache2-mod-php mysql-client gnupg2 openssl php-pear \
 	php-horde php-horde-imp php-horde-groupware php-horde-ingo php-horde-lz4 \
 	php-imagick php-dev php-memcache php-memcached php-net-sieve \
  && pear channel-update pear.php.net \
@@ -65,3 +66,4 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 #CMD ["/sbin/my_init"]
 
 VOLUME /etc/horde
+

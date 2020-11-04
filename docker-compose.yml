@@ -10,6 +10,8 @@ services:
             - 8443:443
         volumes:
             - DocumentRoot-volume:/var/www/html
+        networks: 
+            - newnet
 
     mariadb:
         image: mariadb:10.5.6
@@ -22,6 +24,11 @@ services:
             MYSQL_USER: 'hordeuser'
             MYSQL_PASSWORD: 'nicepassword'
             MYSQL_DATABASE: 'horde'
+        networks: 
+            newnet:
+               aliases:
+               - database
+               - db
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -29,9 +36,12 @@ services:
             - 'mariadb:db'
         ports:
             - 8081:80
+        networks: 
+            - newnet
 
 volumes:
     mariadb-volume:
     DocumentRoot-volume:
 
-
+networks:
+    newnet:
